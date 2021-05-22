@@ -8,8 +8,27 @@ export const basketSlice = createSlice({
   name: "basket",
   initialState,
   reducers: {
-    addToBasket: (state, action) => {},
-    removeFromBasket: (state, action) => {},
+    // Actions
+    addToBasket: (state, action) => {
+      state.items = [...state.items, action.payload]
+    },
+    removeFromBasket: (state, action) => {
+      const index = state.items.findIndex(
+        (basketItem) => basketItem.id === action.payload.id //id comes through action.payload
+      );
+
+      let newBasket = [...state.items]; //make copy
+
+      if (index >= 0) {
+        // the item exists in basket ... remove items
+        newBasket.splice(index, 1)
+      } else {
+        console.warn(
+          `Cannot remove product (id: ${action.payload.id}) as its not in basket`
+        )
+      }
+      state.items = newBasket;
+    },
   },
 });
 
